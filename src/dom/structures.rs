@@ -12,8 +12,16 @@ pub struct ElementNode {
 }
 
 impl ElementNode {
-    pub fn new(tag: impl Into<String>, attributes: HashMap<String, String>, children: Vec<Node>,) -> Self {
-        Self { tag: tag.into(), attributes, children }
+    pub fn new(
+        tag: impl Into<String>,
+        attributes: HashMap<String, String>,
+        children: Vec<Node>,
+    ) -> Self {
+        Self {
+            tag: tag.into(),
+            attributes,
+            children,
+        }
     }
     pub fn tag(&self) -> &str {
         &self.tag
@@ -21,16 +29,21 @@ impl ElementNode {
     pub fn children(&self) -> &[Node] {
         &self.children
     }
+
+    pub fn attributes(&self) -> &HashMap<String, String> {
+        &self.attributes
+    }
 }
 
 pub struct TextNode {
-    content: String
+    content: String,
 }
 
 impl TextNode {
-
     pub fn new(content: impl Into<String>) -> Self {
-        Self { content: content.into() }
+        Self {
+            content: content.into(),
+        }
     }
 
     pub fn content(&self) -> &str {

@@ -11,4 +11,8 @@ impl Page {
     pub fn print_summary(&self) {
         println!("URL: {}\nHTML: {} bytes", self.url, self.html.len());
     }
+
+    pub fn html(&self) -> &str {
+        &self.html
+    }
 }
