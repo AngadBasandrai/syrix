@@ -1,11 +1,17 @@
 mod dom;
+mod graphics;
+mod layout;
 mod parser;
+mod renderer;
 mod util;
 
-use std::collections::HashMap;
-
-use dom::print_dom::print_tree;
-use dom::structures::{ElementNode, Node, TextNode};
+use graphics::mesh::Mesh;
+use graphics::renderer::Renderer;
+use graphics::shader::Shader;
+use graphics::window::Window;
+use layout::builder::build_layout;
+use layout::painter::paint;
+use renderer::text_renderer::render;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut url = String::new();
@@ -16,11 +22,30 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let page = util::page::Page::new(url, html);
 
-    page.print_summary();
-
     let dom = parser::parser::parse_html(page.html()).ok_or("Failed to parse HTML!")?;
 
-    print_tree(&dom);
+    let layout = build_layout(&dom, 0.0, 0.0, 1280.0, 20.0);
+
+    // render(&dom);
+
+    let mut window = Window::new(1280, 720, "Syrix Browser")?;
+
+    let renderer = Renderer::new(1280.0, 720.0)?;
+
+    while !window.should_close() {
+        window.poll_events();
+
+        unsafe {
+            gl::ClearColor(0.15, 0.15, 0.18, 1.0);
+            gl::Clear(gl::COLOR_BUFFER_BIT);
+        }
+
+        if let Some(layout) = &layout {
+            paint(layout, &renderer);
+        }
+
+        window.swap_buffers();
+    }
 
     Ok(())
 }

@@ -1,9 +1,10 @@
 use super::structures::{ElementNode, Node, TextNode};
 
 fn print_node(node: &Node, depth: usize) {
-    match node {
-        Node::Element(elem) => element_handler(elem, depth),
-        Node::Text(text) => text_handler(text, depth),
+    if let Some(elem) = node.as_element() {
+        element_handler(elem, depth);
+    } else if let Some(text) = node.as_text() {
+        text_handler(text, depth);
     }
 }
 

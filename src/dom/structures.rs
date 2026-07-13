@@ -5,6 +5,27 @@ pub enum Node {
     Text(TextNode),
 }
 
+impl Node {
+    pub fn is_element(&self) -> bool {
+        matches!(self, Node::Element(_))
+    }
+    pub fn is_text(&self) -> bool {
+        matches!(self, Node::Text(_))
+    }
+    pub fn as_element(&self) -> Option<&ElementNode> {
+        match self {
+            Node::Element(elem) => Some(elem),
+            Node::Text(_) => None,
+        }
+    }
+    pub fn as_text(&self) -> Option<&TextNode> {
+        match self {
+            Node::Element(_) => None,
+            Node::Text(text) => Some(text),
+        }
+    }
+}
+
 pub struct ElementNode {
     tag: String,
     attributes: HashMap<String, String>,
@@ -32,6 +53,10 @@ impl ElementNode {
 
     pub fn attributes(&self) -> &HashMap<String, String> {
         &self.attributes
+    }
+
+    pub fn attribute(&self, name: String) -> Option<&String> {
+        self.attributes.get(&name)
     }
 }
 
