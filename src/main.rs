@@ -11,6 +11,7 @@ use graphics::shader::Shader;
 use graphics::window::Window;
 use layout::builder::build_layout;
 use layout::painter::paint;
+use layout::painter::print_layout;
 use renderer::text_renderer::render;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -26,6 +27,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let layout = build_layout(&dom, 0.0, 0.0, 1280.0, 20.0);
 
+    if let Some(layout) = &layout {
+        print_layout(&layout.0, 0);
+    }
     // render(&dom);
 
     let mut window = Window::new(1280, 720, "Syrix Browser")?;
@@ -41,7 +45,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         }
 
         if let Some(layout) = &layout {
-            paint(layout, &renderer);
+            paint(&layout.0, &renderer);
         }
 
         window.swap_buffers();

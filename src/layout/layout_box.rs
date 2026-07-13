@@ -28,6 +28,9 @@ impl LayoutBox {
         }
     }
 
+    pub fn tag(&self) -> &str {
+        &self.tag
+    }
     pub fn x(&self) -> f32 {
         self.x
     }
