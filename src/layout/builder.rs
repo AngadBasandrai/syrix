@@ -9,7 +9,11 @@ pub fn build_layout(
     height: f32,
 ) -> Option<(LayoutBox, f32)> {
     if let Some(elem) = node.as_element() {
-        Some(build_element(elem, x, y, width, height))
+        if should_layout(elem.tag()) {
+            Some(build_element(elem, x, y, width, height))
+        } else {
+            None
+        }
     } else {
         None
     }
@@ -34,4 +38,22 @@ fn build_element(
         LayoutBox::new(element.tag().into(), x, y, width, height, children),
         current_y,
     )
+}
+
+fn should_layout(tag: &str) -> bool {
+    match tag {
+        "html" => true,
+        "body" => true,
+        "div" => true,
+        "p" => true,
+        "a" => true,
+        "img" => true,
+        "h1" => true,
+        "h2" => true,
+        "h3" => true,
+        "h4" => true,
+        "span" => true,
+        "button" => true,
+        _ => false,
+    }
 }

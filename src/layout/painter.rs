@@ -1,8 +1,22 @@
 use super::layout_box::LayoutBox;
-use crate::graphics::renderer::Renderer;
+use crate::graphics::{color::Color, renderer::Renderer};
 
 pub fn paint(layout: &LayoutBox, renderer: &Renderer) {
-    renderer.draw_rect(layout.x(), layout.y(), layout.width(), layout.height());
+    let color = match layout.tag() {
+        "h1" => Color::new(0.0, 1.0, 0.0),
+        "p" => Color::new(1.0, 1.0, 0.0),
+        "body" => Color::new(0.5, 0.5, 0.5),
+        "div" => Color::new(0.0, 0.0, 1.0),
+        _ => Color::new(1.0, 1.0, 1.0),
+    };
+
+    renderer.draw_rect(
+        layout.x(),
+        layout.y(),
+        layout.width(),
+        layout.height(),
+        &color,
+    );
 
     for child in layout.children() {
         paint(child, renderer);

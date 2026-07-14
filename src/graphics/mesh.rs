@@ -46,6 +46,13 @@ impl Mesh {
         }
     }
 
+    pub fn unit_square() -> Self {
+        Mesh::new(&[
+            0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0,
+            0.0,
+        ])
+    }
+
     pub fn draw(&self) {
         unsafe {
             gl::BindVertexArray(self.vao);

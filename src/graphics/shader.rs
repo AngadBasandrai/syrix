@@ -43,9 +43,30 @@ impl Shader {
         };
         Ok(Self { id: program })
     }
+
     pub fn use_program(&self) {
         unsafe {
             gl::UseProgram(self.id);
+        }
+    }
+
+    pub fn set_vec2(&self, name: &str, x: f32, y: f32) {
+        unsafe {
+            let name = CString::new(name).unwrap();
+
+            let location = gl::GetUniformLocation(self.id, name.as_ptr());
+
+            gl::Uniform2f(location, x, y);
+        }
+    }
+
+    pub fn set_vec3(&self, name: &str, x: f32, y: f32, z: f32) {
+        unsafe {
+            let name = CString::new(name).unwrap();
+
+            let location = gl::GetUniformLocation(self.id, name.as_ptr());
+
+            gl::Uniform3f(location, x, y, z);
         }
     }
 }
