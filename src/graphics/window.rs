@@ -1,5 +1,11 @@
 use glfw::{Context, Glfw, GlfwReceiver, PWindow, WindowEvent};
 
+pub enum InputEvent {
+    Char(char),
+    Backspace,
+    Enter,
+}
+
 pub struct Window {
     glfw: Glfw,
     window: PWindow,
@@ -17,6 +23,7 @@ impl Window {
         window.make_current();
 
         window.set_key_polling(true);
+        window.set_char_polling(true);
         window.set_framebuffer_size_polling(true);
         window.set_close_polling(true);
 
@@ -37,13 +44,28 @@ impl Window {
         self.window.should_close()
     }
 
-    pub fn poll_events(&mut self) {
+    pub fn poll_events(&mut self) -> Vec<InputEvent> {
         self.glfw.poll_events();
+
+        let mut input = Vec::new();
 
         for (_, event) in glfw::flush_messages(&self.events) {
             match event {
                 WindowEvent::Key(glfw::Key::Escape, _, glfw::Action::Press, _) => {
                     self.window.set_should_close(true);
+                }
+
+                WindowEvent::Key(glfw::Key::Backspace, _, glfw::Action::Press, _)
+                | WindowEvent::Key(glfw::Key::Backspace, _, glfw::Action::Repeat, _) => {
+                    input.push(InputEvent::Backspace);
+                }
+
+                WindowEvent::Key(glfw::Key::Enter, _, glfw::Action::Press, _) => {
+                    input.push(InputEvent::Enter);
+                }
+
+                WindowEvent::Char(c) => {
+                    input.push(InputEvent::Char(c));
                 }
 
                 WindowEvent::FramebufferSize(width, height) => unsafe {
@@ -53,6 +75,8 @@ impl Window {
                 _ => {}
             }
         }
+
+        input
     }
 
     pub fn swap_buffers(&mut self) {

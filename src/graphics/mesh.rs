@@ -7,7 +7,7 @@ pub struct Mesh {
 impl Mesh {
     pub fn new(vertices: &[f32]) -> Self {
         unsafe {
-            let vertex_count = (vertices.len() / 3) as i32;
+            let vertex_count = (vertices.len() / 5) as i32;
 
             let (mut vao, mut vbo) = (0, 0);
 
