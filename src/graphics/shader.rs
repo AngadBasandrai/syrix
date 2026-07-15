@@ -69,4 +69,14 @@ impl Shader {
             gl::Uniform3f(location, x, y, z);
         }
     }
+
+    pub fn set_int(&self, name: &str, value: i32) {
+        unsafe {
+            let name = CString::new(name).unwrap();
+
+            let location = gl::GetUniformLocation(self.id, name.as_ptr());
+
+            gl::Uniform1i(location, value);
+        }
+    }
 }

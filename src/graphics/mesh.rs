@@ -29,11 +29,20 @@ impl Mesh {
                 3,
                 gl::FLOAT,
                 gl::FALSE,
-                (3 * std::mem::size_of::<f32>()) as gl::types::GLsizei,
+                (5 * std::mem::size_of::<f32>()) as gl::types::GLsizei,
                 std::ptr::null(),
             );
-
             gl::EnableVertexAttribArray(0);
+
+            gl::VertexAttribPointer(
+                1,
+                2,
+                gl::FLOAT,
+                gl::FALSE,
+                (5 * std::mem::size_of::<f32>()) as gl::types::GLsizei,
+                (3 * std::mem::size_of::<f32>()) as *const _,
+            );
+            gl::EnableVertexAttribArray(1);
 
             gl::BindBuffer(gl::ARRAY_BUFFER, 0);
             gl::BindVertexArray(0);
@@ -48,8 +57,8 @@ impl Mesh {
 
     pub fn unit_square() -> Self {
         Mesh::new(&[
-            0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 0.0,
-            0.0,
+            0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0,
+            0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 1.0, 0.0, 1.0, 1.0, 0.0, 1.0, 1.0,
         ])
     }
 
