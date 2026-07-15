@@ -8,6 +8,7 @@ use super::texture::Texture;
 pub struct Renderer {
     shader: Shader,
     rectangle: Mesh,
+    solid: Texture,
     width: f32,
     height: f32,
 }
@@ -22,6 +23,7 @@ impl Renderer {
         Ok(Self {
             shader: Shader::new("shaders/triangle.vert", "shaders/triangle.frag")?,
             rectangle: Mesh::unit_square(),
+            solid: Texture::from_grayscale(1, 1, &[255]),
             width,
             height,
         })
@@ -46,6 +48,9 @@ impl Renderer {
         self.shader.set_vec2("uSize", ndc_width, -ndc_height);
         self.shader
             .set_vec3("uColor", color.r(), color.g(), color.b());
+
+        self.solid.bind(0);
+        self.shader.set_int("uTexture", 0);
 
         self.rectangle.draw();
     }

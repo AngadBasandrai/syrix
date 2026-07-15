@@ -20,3 +20,14 @@ pub fn normalize_url(input: &str) -> String {
 
     url
 }
+
+pub fn resolve_href(base: &str, href: &str) -> Option<String> {
+    if href.starts_with('#') || href.starts_with("javascript:") || href.starts_with("mailto:") {
+        return None;
+    }
+
+    let base = url::Url::parse(base).ok()?;
+    let resolved = base.join(href).ok()?;
+
+    Some(resolved.to_string())
+}

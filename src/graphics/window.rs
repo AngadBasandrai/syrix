@@ -4,6 +4,7 @@ pub enum InputEvent {
     Char(char),
     Backspace,
     Enter,
+    Click(f32, f32),
 }
 
 pub struct Window {
@@ -24,6 +25,7 @@ impl Window {
 
         window.set_key_polling(true);
         window.set_char_polling(true);
+        window.set_mouse_button_polling(true);
         window.set_framebuffer_size_polling(true);
         window.set_close_polling(true);
 
@@ -66,6 +68,11 @@ impl Window {
 
                 WindowEvent::Char(c) => {
                     input.push(InputEvent::Char(c));
+                }
+
+                WindowEvent::MouseButton(glfw::MouseButton::Left, glfw::Action::Press, _) => {
+                    let (x, y) = self.window.get_cursor_pos();
+                    input.push(InputEvent::Click(x as f32, y as f32));
                 }
 
                 WindowEvent::FramebufferSize(width, height) => unsafe {

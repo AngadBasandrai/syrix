@@ -15,6 +15,16 @@ pub fn build_display_list<'a>(layout: &LayoutBox<'a>, commands: &mut Vec<Display
             italic: style.italic,
             color: style.color,
         });
+
+        if run.href().is_some() {
+            commands.push(DisplayCommand::Rect {
+                x: run.x(),
+                y: run.y() + 3.0,
+                width: run.width(),
+                height: 1.0,
+                color: style.color,
+            });
+        }
     }
 
     for child in layout.children() {

@@ -2004,6 +2004,7 @@ dependencies = [
  "html5ever",
  "markup5ever_rcdom",
  "reqwest",
+ "url",
 ]
 
 [[package]]
